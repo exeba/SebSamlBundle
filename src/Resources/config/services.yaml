@@ -1,0 +1,51 @@
+services:
+
+  seb_saml.controller:
+    class: Seb\SamlBundle\Controller\SamlController
+    arguments:
+      - '@seb_saml.auth'
+    public: true
+
+  seb_saml.guard:
+    class: Seb\AuthenticatorBundle\Security\Guard\Authenticator
+    arguments:
+      $credentialsProvider: '@seb_saml.credentials_provider'
+      $credentialsChecker: '@seb_saml.credentials_checker'
+      $authenticatedTokenProvider: '@seb_saml.auth_token_provider'
+      $missingUserPolicy: '@seb_saml.missing_user'
+      $badCredentialsPolicy: '@seb_saml.bad_credentials'
+      $successfulAuthenticationPolicy: '@seb_saml.successful_auth'
+
+  seb_saml.credentials_provider:
+    class: Seb\SamlBundle\Security\SamlCredentialsProvider
+    autowire: true
+    arguments:
+      $oneLoginAuth: '@seb_saml.auth'
+      $attributesStorage: '@seb_saml.attr_storage'
+      $options: '%seb_saml.config%'
+
+  seb_saml.credentials_checker:
+    class: Seb\SamlBundle\Security\SamlCredentialsChecker
+
+  seb_saml.auth_token_provider:
+    class: Seb\SamlBundle\Security\SamlAuthenticatedTokenProvider
+    arguments:
+      - '@seb_saml.attr_storage'
+
+  seb_saml.bad_credentials:
+    class: Seb\AuthenticatorBundle\Security\Policies\RedirectOnBadCredentials
+    autowire: true
+    arguments:
+      - '%seb_saml.config.failure_path%'
+
+  seb_saml.successful_auth:
+    class: Seb\AuthenticatorBundle\Security\Policies\TargetPathOrHomePageRedirect
+    autowire: true
+
+  seb_saml.attr_storage:
+    class: Seb\SamlBundle\Security\SamlAttributesStorage
+
+  seb_saml.auth:
+    class: OneLogin\Saml2\Auth
+    arguments:
+      - '%seb_saml.config.one_login_settings%'
