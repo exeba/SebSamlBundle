@@ -1,10 +1,11 @@
 services:
 
-  seb_saml.controller:
-    class: Seb\SamlBundle\Controller\SamlController
+  Seb\SamlBundle\Controller\SamlController:
     arguments:
       - '@seb_saml.auth'
     public: true
+
+  seb_saml.controller: '@Seb\SamlBundle\Controller\SamlController'
 
   seb_saml.guard:
     class: Seb\AuthenticatorBundle\Security\Guard\Authenticator

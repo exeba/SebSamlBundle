@@ -1,0 +1,16 @@
+saml_metadata:
+  path:     /saml/metadata
+  defaults: { _controller: Seb\SamlBundle\Controller\SamlController::metadataAction }
+
+saml_acs:
+  path:     /saml/acs
+  methods:  ['POST']
+  defaults: { _controller: Seb\SamlBundle\Controller\SamlController::assertionConsumerServiceAction }
+
+saml_login:
+  path:     /saml/login
+  defaults: { _controller: Seb\SamlBundle\Controller\SamlController::loginAction }
+
+saml_logout:
+  path:     /saml/logout
+  defaults: { _controller: Seb\SamlBundle\Controller\SamlController::singleLogoutServiceAction }
