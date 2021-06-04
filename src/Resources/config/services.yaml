@@ -46,7 +46,10 @@ services:
   seb_saml.attr_storage:
     class: Seb\SamlBundle\Security\SamlAttributesStorage
 
-  seb_saml.auth:
-    class: OneLogin\Saml2\Auth
+  Seb\SamlBundle\Security\OneLoginAuthFactory:
     arguments:
       - '%seb_saml.config.one_login_settings%'
+      - '%seb_saml.config%'
+
+  seb_saml.auth:
+    factory: ['@Seb\SamlBundle\Security\OneLoginAuthFactory', 'createOneLoginAuth']
