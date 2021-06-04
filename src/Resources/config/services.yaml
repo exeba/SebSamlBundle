@@ -52,4 +52,5 @@ services:
       - '%seb_saml.config%'
 
   seb_saml.auth:
+    class: OneLogin\Saml2\Auth
     factory: ['@Seb\SamlBundle\Security\OneLoginAuthFactory', 'createOneLoginAuth']
