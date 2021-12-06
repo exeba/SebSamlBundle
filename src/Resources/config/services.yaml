@@ -6,15 +6,21 @@ services:
       - '@seb_saml.auth'
     public: true
 
-  seb_saml.guard:
-    class: Seb\AuthenticatorBundle\Security\Guard\Authenticator
+  seb_saml.authenticator:
+    class: Seb\AuthenticatorBundle\Security\Authenticator\Authenticator
     arguments:
       $credentialsProvider: '@seb_saml.credentials_provider'
-      $credentialsChecker: '@seb_saml.credentials_checker'
+      $passportProvider: '@seb_saml.passport_provider'
       $authenticatedTokenProvider: '@seb_saml.auth_token_provider'
-      $missingUserPolicy: '@seb_saml.missing_user'
-      $badCredentialsPolicy: '@seb_saml.bad_credentials'
       $successfulAuthenticationPolicy: '@seb_saml.successful_auth'
+      $badCredentialsPolicy: '@seb_saml.bad_credentials'
+
+  seb_saml.passport_provider:
+    class: Seb\AuthenticatorBundle\Security\Authenticator\PassportProvider
+    autowire: true
+    arguments:
+      $credentialsChecker: '@seb_saml.credentials_checker'
+      $missingUserPolicy: '@seb_saml.missing_user'
 
   seb_saml.credentials_provider:
     class: Seb\SamlBundle\Security\SamlCredentialsProvider
