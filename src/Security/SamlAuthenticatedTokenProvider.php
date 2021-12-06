@@ -2,8 +2,8 @@
 
 namespace Seb\SamlBundle\Security;
 
-use Seb\AuthenticatorBundle\Security\AuthenticatedTokenProviderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Seb\AuthenticatorBundle\Security\Authenticator\AuthenticatedTokenProviderInterface;
 
 class SamlAuthenticatedTokenProvider implements AuthenticatedTokenProviderInterface
 {
@@ -14,9 +14,12 @@ class SamlAuthenticatedTokenProvider implements AuthenticatedTokenProviderInterf
         $this->attributesStorage = $attributesStorage;
     }
 
-    public function createAuthenticatedToken(UserInterface $user, $providerKey)
+    public function createAuthenticatedToken(Passport $passport, $providerKey)
     {
         return new SamlAuthenticatedToken(
-            $user, $providerKey, $user->getRoles(), $this->attributesStorage->getAttributes($user->getUsername()));
+            $passport->getUser(),
+            $providerKey,
+            $passport->getUser()->getRoles(),
+            $this->attributesStorage->getAttributes($passport->getUser()->getUserIdentifier()));
     }
 }

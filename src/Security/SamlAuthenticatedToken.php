@@ -2,10 +2,10 @@
 
 namespace Seb\SamlBundle\Security;
 
+use Seb\AuthenticatorBundle\Security\AuthenticatedTokenProviders\AuthenticatedToken;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
-class SamlAuthenticatedToken extends PostAuthenticationGuardToken
+class SamlAuthenticatedToken extends AuthenticatedToken
 {
     public function __construct(UserInterface $user, string $providerKey, array $roles, array $attributes)
     {
