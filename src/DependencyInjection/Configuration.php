@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('user_provider')->end()
                 ->scalarNode('username_attribute')->defaultValue('uid')->end()
                 ->scalarNode('check_path')->defaultValue('/saml/acs')->end()
                 ->scalarNode('login_path')->defaultValue('/saml/login')->end()

@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 
 class SebSamlExtension extends Extension
 {
@@ -25,6 +26,11 @@ class SebSamlExtension extends Extension
         $container->setParameter('seb_saml.config.failure_path', $config['failure_path']);
 
         $container->setDefinition('seb_saml.missing_user', $this->missingUserPolicyDefinition($config));
+
+        if (array_key_exists('user_provider',$config)) {
+            $container->getDefinition('seb_saml.passport_provider')
+                ->setArgument(0, new Reference("security.user.provider.concrete.{$config['user_provider']}"));
+        }
     }
 
     public function missingUserPolicyDefinition(array $config)
