@@ -2,9 +2,10 @@
 
 namespace Seb\SamlBundle\Security;
 
-use Seb\AuthenticatorBundle\Security\CredentialsInterface;
+use Seb\AuthenticatorBundle\Security\CredentialsInterface as SebCredentialsInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CredentialsInterface;
 
-class SamlCredentials implements CredentialsInterface
+class SamlCredentials implements SebCredentialsInterface, CredentialsInterface
 {
     private $attributes;
     private $username;
@@ -27,5 +28,10 @@ class SamlCredentials implements CredentialsInterface
     public function setUsername($username)
     {
         $this->username = $username;
+    }
+
+    public function isResolved(): bool
+    {
+        return true;
     }
 }
