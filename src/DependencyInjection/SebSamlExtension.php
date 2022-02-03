@@ -33,7 +33,7 @@ class SebSamlExtension extends Extension
         }
     }
 
-    public function missingUserPolicyDefinition(array $config)
+    private function missingUserPolicyDefinition(array $config)
     {
         $policy = $config['missing_user'] ?? 'fail';
         if ('create' === $policy) {
