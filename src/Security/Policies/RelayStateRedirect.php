@@ -20,11 +20,11 @@ class RelayStateRedirect implements SuccessfulAuthenticationPolicy
 
     private function hasRelayState(Request $request)
     {
-        return $request->attributes->has('RelayState');
+        return $request->request->has('RelayState');
     }
 
     private function getRelayState(Request $request)
     {
-        return $request->attributes->get('RelayState');
+        return $request->request->get('RelayState');
     }
 }
