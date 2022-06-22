@@ -6,43 +6,81 @@ use OneLogin\Saml2\Auth;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class SamlController
 {
     use TargetPathTrait;
 
-    protected $samlAuth;
+    private $samlAuth;
+    private $security;
+    private $httpUtils;
+    private $defaultTargetPath;
 
-    public function __construct(Auth $samlAuth)
+    public function __construct(
+        Auth $samlAuth,
+        Security $security,
+        HttpUtils $httpUtils,
+        $defaultTargetPath = 'homepage')
     {
         $this->samlAuth = $samlAuth;
+        $this->security = $security;
+        $this->httpUtils = $httpUtils;
+        $this->defaultTargetPath = $defaultTargetPath;
     }
 
     public function loginAction(Request $request)
     {
-        $authErrorKey = Security::AUTHENTICATION_ERROR;
-        $session = $targetPath = null;
+        // Prevent authentication loops
+        $this->assertUnauthenticatedUser();
 
+        $this->assertNoAuthenticationErrors($request);
+
+        $this->samlAuth->login($this->getRelayState($request));
+    }
+
+    private function assertUnauthenticatedUser()
+    {
+        if ($this->security->getUser()) {
+            throw new \RuntimeException('User is already authenticated');
+        }
+    }
+
+    private function assertNoAuthenticationErrors(Request $request)
+    {
+        $authError = $this->getAndClearAuthenticationError($request);
+        if ($authError) {
+            throw new \RuntimeException($authError->getMessage());
+        }
+    }
+
+    private function getRelayState(Request $request)
+    {
         if ($request->hasSession()) {
             $session = $request->getSession();
-            $targetPath = $this->getTargetPath($session, 'mail');
+            $targetPath = $this->getTargetPath($session, 'main');
         }
+
+        return $targetPath ?? $this->httpUtils->generateUri($request, $this->defaultTargetPath);
+    }
+
+    private function getAndClearAuthenticationError(Request $request)
+    {
+        $authErrorKey = Security::AUTHENTICATION_ERROR;
 
         if ($request->attributes->has($authErrorKey)) {
-            $error = $request->attributes->get($authErrorKey);
-        } elseif (null !== $session && $session->has($authErrorKey)) {
-            $error = $session->get($authErrorKey);
-            $session->remove($authErrorKey);
-        } else {
-            $error = null;
+            return $request->attributes->get($authErrorKey);
         }
 
-        if ($error) {
-            throw new \RuntimeException($error->getMessage());
+        if ($request->hasSession() && $request->getSession()->has($authErrorKey)) {
+            $error = $request->getSession()->has($authErrorKey);
+            $request->getSession()->remove($authErrorKey);
+
+            return $error;
         }
 
-        $this->samlAuth->login($targetPath);
+        return null;
     }
 
     public function metadataAction()

@@ -2,6 +2,7 @@ services:
 
   seb_saml.controller:
     class: Seb\SamlBundle\Controller\SamlController
+    autowire: true
     arguments:
       - '@seb_saml.auth'
     public: true
