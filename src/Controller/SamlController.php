@@ -6,9 +6,12 @@ use OneLogin\Saml2\Auth;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class SamlController
 {
+    use TargetPathTrait;
+
     protected $samlAuth;
 
     public function __construct(Auth $samlAuth)
@@ -23,7 +26,7 @@ class SamlController
 
         if ($request->hasSession()) {
             $session = $request->getSession();
-            $targetPath = $session->get('_security.main.target_path');
+            $targetPath = $this->getTargetPath($session, 'mail');
         }
 
         if ($request->attributes->has($authErrorKey)) {
