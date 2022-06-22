@@ -27,7 +27,7 @@ class SebSamlExtension extends Extension
 
         $container->setDefinition('seb_saml.missing_user', $this->missingUserPolicyDefinition($config));
 
-        if (array_key_exists('user_provider',$config)) {
+        if (array_key_exists('user_provider', $config)) {
             $container->getDefinition('seb_saml.passport_provider')
                 ->setArgument(0, new Reference("security.user.provider.concrete.{$config['user_provider']}"));
         }

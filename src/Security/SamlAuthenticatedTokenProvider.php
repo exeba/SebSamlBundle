@@ -2,8 +2,8 @@
 
 namespace Seb\SamlBundle\Security;
 
-use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Seb\AuthenticatorBundle\Security\Authenticator\AuthenticatedTokenProviderInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 
 class SamlAuthenticatedTokenProvider implements AuthenticatedTokenProviderInterface
 {
