@@ -20,6 +20,7 @@ class SamlAuthenticatedTokenProvider implements AuthenticatedTokenProviderInterf
             $passport->getUser(),
             $providerKey,
             $passport->getUser()->getRoles(),
-            $this->attributesStorage->getAttributes($passport->getUser()->getUserIdentifier()));
+            $this->attributesStorage->getAttributes($passport->getUser()->getUserIdentifier())
+        );
     }
 }

@@ -22,8 +22,8 @@ class SamlController
         Auth $samlAuth,
         Security $security,
         HttpUtils $httpUtils,
-        $defaultTargetPath = 'homepage')
-    {
+        $defaultTargetPath = 'homepage'
+    ) {
         $this->samlAuth = $samlAuth;
         $this->security = $security;
         $this->httpUtils = $httpUtils;

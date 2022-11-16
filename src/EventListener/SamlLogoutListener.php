@@ -20,8 +20,8 @@ class SamlLogoutListener
     public function __construct(
         HttpUtils $httpUtils,
         TokenStorageInterface $tokenStorage,
-        Auth $samlAuth)
-    {
+        Auth $samlAuth
+    ) {
         $this->httpUtils = $httpUtils;
         $this->tokenStorage = $tokenStorage;
         $this->samlAuth = $samlAuth;
