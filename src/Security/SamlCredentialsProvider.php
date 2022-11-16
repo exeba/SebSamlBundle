@@ -78,6 +78,6 @@ class SamlCredentialsProvider implements CredentialsProviderInterface
 
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        return new RedirectResponse($this->options['check_path']);
+        return new RedirectResponse($this->options['login_path']);
     }
 }
