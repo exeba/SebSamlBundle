@@ -15,7 +15,8 @@
     ],
     "require": {
         "php": ">7.1",
-        "seb/authenticator-bundle": ">=3.1.1",
+        "symfony/security-bundle": ">=6.2",
+        "seb/authenticator-bundle": ">=3.1.5",
         "onelogin/php-saml" : ">=3.0"
     },
     "config": {
