@@ -40,7 +40,7 @@ class SamlLogoutListener
         } catch (Error $e) {
             $token = $event->getToken();
             $sessionIndex = $token->hasAttribute('sessionIndex') ? $token->getAttribute('sessionIndex') : null;
-            $redirectUrl = $this->samlAuth->logout(null, [], $token->getUsername(), $sessionIndex, true);
+            $redirectUrl = $this->samlAuth->logout(null, [], $token->getUserIdentifier(), $sessionIndex, true);
 
             $event->setResponse(new RedirectResponse($redirectUrl));
         }
