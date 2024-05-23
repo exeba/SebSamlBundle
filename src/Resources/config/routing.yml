@@ -11,6 +11,10 @@ saml_login:
   path:     /saml/login
   defaults: { _controller: seb_saml.controller::loginAction }
 
+saml_init_logout:
+  path:     /saml/init-logout
+  defaults: { _controller: seb_saml.controller::initLogoutAction }
+
 saml_logout:
   path:     /saml/logout
   defaults: { _controller: seb_saml.controller::singleLogoutServiceAction }

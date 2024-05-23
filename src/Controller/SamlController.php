@@ -4,6 +4,7 @@ namespace Seb\SamlBundle\Controller;
 
 use OneLogin\Saml2\Auth;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\HttpUtils;
@@ -96,6 +97,15 @@ class SamlController
     public function assertionConsumerServiceAction()
     {
         throw new \RuntimeException('You must configure the check path to be handled by the firewall.');
+    }
+
+    public function initLogoutAction()
+    {
+        $token = $this->security->getToken();
+        $sessionIndex = $token->hasAttribute('sessionIndex') ? $token->getAttribute('sessionIndex') : null;
+        $redirectUrl = $this->samlAuth->logout(null, [], $token->getUserIdentifier(), $sessionIndex, true);
+
+        return new RedirectResponse($redirectUrl);
     }
 
     public function singleLogoutServiceAction()
