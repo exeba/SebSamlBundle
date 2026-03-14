@@ -10,16 +10,10 @@ class Configuration implements ConfigurationInterface
     /**
      * @return TreeBuilder
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        if (method_exists(TreeBuilder::class, 'getRootNode')) {
-            $treeBuilder = new TreeBuilder('seb_saml');
-            $rootNode = $treeBuilder->getRootNode();
-        } else {
-            // Deprecated in Symfony 4.2
-            $treeBuilder = new TreeBuilder();
-            $rootNode = $treeBuilder->root('seb_saml');
-        }
+        $treeBuilder = new TreeBuilder('seb_saml');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
