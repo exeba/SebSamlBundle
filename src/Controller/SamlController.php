@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\HttpUtils;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class SamlController
@@ -68,7 +69,7 @@ class SamlController
 
     private function getAndClearAuthenticationError(Request $request)
     {
-        $authErrorKey = Security::AUTHENTICATION_ERROR;
+        $authErrorKey = SecurityRequestAttributes::AUTHENTICATION_ERROR;
 
         if ($request->attributes->has($authErrorKey)) {
             return $request->attributes->get($authErrorKey);
