@@ -23,7 +23,7 @@ class SamlCredentialsProvider implements CredentialsProviderInterface
         Auth $oneLoginAuth,
         SamlAttributesStorage $attributesStorage,
         LoggerInterface $logger,
-        array $options = null
+        ?array $options = null
     ) {
         $this->httpUtils = $httpUtils;
         $this->oneLoginAuth = $oneLoginAuth;
@@ -76,7 +76,7 @@ class SamlCredentialsProvider implements CredentialsProviderInterface
         return true;
     }
 
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, ?AuthenticationException $authException = null)
     {
         return new RedirectResponse($this->options['login_path']);
     }
